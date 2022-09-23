@@ -1,0 +1,202 @@
+from turtle import *
+import turtle
+import time
+
+win=turtle.Screen()	
+win. bgcolor('black')
+turtle. speed(1)
+win. tracer(0)
+game_open=True
+#Score
+score=0
+life=3
+#score Pen
+pen=turtle.Turtle()
+pen.speed(1)
+pen.color('white')
+pen.penup()
+pen.hideturtle()
+pen.goto(-200,690)
+pen.write('Score:  0',align='right',font=('courier',6,'normal'))
+
+#lives pen2
+pen2=turtle.Turtle()
+pen2.speed(1)
+pen2.color('white')
+pen2.penup()
+pen2.hideturtle()
+pen2.goto(200,690)
+pen2.write('Life:  3',align='left',font=('courier',6,'normal'))
+
+# win lose pen3
+pen3=turtle.Turtle()
+pen3.speed(1)
+pen3.color('white')
+pen3.penup()
+pen3.hideturtle()
+pen3.goto(0,30)
+
+#paddle 
+paddle=turtle.Turtle()
+paddle.speed(0)
+paddle.shape("square")
+paddle.color("white")
+paddle. shapesize(stretch_wid=8,stretch_len=2)
+paddle. penup()
+paddle. goto(300,0)
+
+
+#ball 1
+ball=turtle.Turtle()
+ball.speed(0)
+ball.shape("circle")
+ball.color("white")
+ball. penup()
+ball. goto(0,0)
+ball. dx=2
+ball. dy=2
+
+#ball 2
+ball2=turtle.Turtle()
+ball2.speed(0)
+ball2.shape("circle")
+ball2.color("white")
+ball2. penup()
+ball2. goto(0,0)
+ball2. dx=-2
+ball2. dy=2
+
+#ball 3
+ball3=turtle.Turtle()
+ball3.speed(0)
+ball3.shape("circle")
+ball3.color("white")
+ball3. penup()
+ball3. goto(0,0)
+ball3. dx=-2
+ball3. dy=-2
+
+
+
+def got(x,y):
+	paddle. sety(y)
+
+win.onclick(got)
+
+class ball_class():
+		
+	#border checking function 
+
+	def ballck(ball):
+		if ball. ycor()>710:
+			ball. sety(710)
+			ball. dy*=-1
+	
+		
+		if ball. xcor()>350:
+			ball. setx(350)
+			ball. dx*=-1
+			global score,pen,pen2,life
+			score=int(score/2)
+			pen.clear()
+			pen.write('Score:  {}'.format(score),align='right',font=('courier',6,'normal'))
+			life-=1
+			pen2.clear()
+			pen2.write('Life:  {}'.format(life),align='left',font=('courier',6,'normal'))
+
+		if ball. ycor()<-710:
+			ball. sety(-710)
+			ball. dy*=-1
+			
+			
+		if ball. xcor()<-350:
+			ball. setx(-350)
+			ball. dx*=-1
+
+
+while game_open==True:
+	win.update()
+
+#ball 1 movement 
+
+	#ball 1 border check
+	ball_class.ballck(ball)
+
+	#ball movement
+	ball. setx(ball.xcor()+ball.dx)
+	ball. sety(ball.ycor()+ball.dy)
+	
+
+	
+	
+
+
+
+	
+
+
+	
+#ball and paddle collision 
+
+	
+	#for ball 1
+	if (ball. xcor()>270 and ball.xcor()<300 and (ball. ycor()<paddle.ycor()+68 and ball.ycor()>paddle.ycor()-68)):
+		
+		ball. setx(270)
+		ball. dx*=-1
+		score+=1
+		pen.clear()
+		pen.write('Score:  {}'.format(score),align='right',font=('courier',6,'normal'))
+	
+		
+	#for ball 2
+	if (ball2. xcor()>270 and ball2.xcor()<300 and (ball2. ycor()<paddle.ycor()+68 and ball2.ycor()>paddle.ycor()-68)):
+		
+		ball2. setx(270)
+		ball2. dx*=-1
+		score+=1
+		pen.clear()
+		pen.write('Score:  {}'.format(score),align='right',font=('courier',6,'normal'))
+	
+		
+	#for ball 3
+	if (ball3. xcor()>270 and ball3.xcor()<300 and (ball3. ycor()<paddle.ycor()+68 and ball3.ycor()>paddle.ycor()-68)):
+		
+		ball3. setx(270)
+		ball3. dx*=-1
+		score+=1
+		pen.clear()
+		pen.write('Score:  {}'.format(score),align='right',font=('courier',6,'normal'))
+	
+		
+	# life checking
+	if life<=0:
+		pen3.color('red')
+		pen3.write('YOU LOSE... !!',align='center',font=('courier',10,'normal'))
+		time.sleep(200)
+
+
+	# score checking
+
+	if score>6:
+		#ball 2 movement
+
+		ball2. setx(ball2.xcor()+ball2.dx)
+		ball2. sety(ball2.ycor()+ball2.dy)
+		
+		ball_class.ballck(ball2)
+		
+	if score>9:
+		#ball 3 movement 
+
+		#ball movement
+		ball3. setx(ball3.xcor()+ball3.dx)
+		ball3. sety(ball3.ycor()+ball3.dy)
+		#ball 3 border check
+		ball_class.ballck(ball3)
+	if score>14:
+			pen3.color('yellow')
+			pen3.write('W I N',align='center',font=('courier',10,'bold '))
+			time.sleep(200)
+	
+win. mainloop()
